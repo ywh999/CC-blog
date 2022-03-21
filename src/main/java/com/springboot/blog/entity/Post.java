@@ -40,8 +40,9 @@ public class Post {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)//级联所有操作，mappedby是用来指定由多的一方来维护关系, 避免生成中间表的, 用在一对多的关系里;
+    //级联所有操作，mappedby是用来指定由多的一方来维护关系, 避免生成中间表的, 用在一对多的关系里;
     // orphanRemoval是删除鼓励元素
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 
 }
