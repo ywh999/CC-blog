@@ -1,8 +1,6 @@
 package com.springboot.blog.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Arrays;
@@ -16,7 +14,10 @@ import java.util.Set;
  * @create: 2022-03-12 17:22
  **/
 
-@Data
+
+//实体类用getter和setter才不会报错, 因为避免了重写tostring, 如果null.tostring 就会报错
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

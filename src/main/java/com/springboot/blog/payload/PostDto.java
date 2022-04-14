@@ -2,6 +2,8 @@ package com.springboot.blog.payload;
 
 import lombok.Data;
 
+import java.util.Set;
+
 /**
  * @program: springboot-blog-rest-api
  * @description: post data transefer object
@@ -15,4 +17,5 @@ public class PostDto {
     private String title;
     private String description;
     private String content;
+    private Set<CommentDto> comments;
 }
