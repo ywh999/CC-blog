@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 /**
  * @program: springboot-blog-rest-api
  * @description: post controller
@@ -29,7 +31,7 @@ public class PostController {
     //create blog post
     //request body annotation is to convert json to dto
     @PostMapping//定义处理方法的请求的url地址
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) {
+    public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto) {   //valid 注解用来检查 PostDto里定义的规则
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
     }
 
@@ -54,7 +56,7 @@ public class PostController {
 
     //update post by id rest api
     @PutMapping("/{id}")
-    public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto,
+    public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto postDto,   //valid 注解用来检查 PostDto里定义的规则
                                               @PathVariable(name = "id") long id) {
         PostDto postResponse = postService.updatePost(postDto, id);
 
