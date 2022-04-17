@@ -4,10 +4,12 @@ import com.springboot.blog.payload.ErrorDetails;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -36,7 +38,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler { //�
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
-
     @ExceptionHandler(BlogAPIException.class)
     public ResponseEntity<ErrorDetails> handlerBlogAPIException(BlogAPIException exception,
                                                                 WebRequest webRequest) {
@@ -55,7 +56,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler { //�
                 webRequest.getDescription(false));  //得到url
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 
     //spring中和valid注解配合起来使用的检错信息, 如果参数通不过校验返回json形式的报错
     @Override

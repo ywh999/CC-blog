@@ -15,7 +15,7 @@ import java.util.Set;
  **/
 
 
-//实体类用getter和setter才不会报错, 因为避免了重写tostring, 如果null.tostring 就会报错
+//实体类用getter和setter才不会报错, 因为避免了重写tostring, 如果null.tostring 就会报错(在map中使用的时候)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -42,7 +42,7 @@ public class Post {
     private String content;
 
     //级联所有操作，mappedby是用来指定由多的一方来维护关系, 避免生成中间表的, 用在一对多的关系里;
-    // orphanRemoval是删除鼓励元素
+    // orphanRemoval是删除孤立元素
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 
