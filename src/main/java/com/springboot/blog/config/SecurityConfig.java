@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -46,19 +47,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()   //关闭csrf防护, 避免每次请求要带上csrf token
                 .authorizeRequests()  //开启请求的权限配置
                 .antMatchers(HttpMethod.GET, "/api/**").permitAll()  //表示所匹配的ant风格的url, 任何用户都可以访问
+                .antMatchers("/api/auth/**").permitAll()
                 .anyRequest()  //表示匹配所有请求
                 .authenticated()  //允许认证过的用户访问
                 .and()
                 .httpBasic();  //http基本认证，每次请求时，在请求头Authorization参数中附带用户/密码的base64编码，参考base64
     }
 
+    //Spring Security中对用户身份认证的类
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
 
-    //    //硬编码创建任务
+    //在auth controller里创建AuthenticationManager对象
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+
+    //    //硬编码创建任务,里面有inmemory的几个用户对象
 //    @Override
 //    @Bean //向IOC容器注入用户对象
 //    protected UserDetailsService userDetailsService() {
