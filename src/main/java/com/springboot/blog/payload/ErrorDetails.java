@@ -12,7 +12,6 @@ import java.util.Date;
  * @create: 2022-04-14 12:14
  **/
 
-@Getter
 public class ErrorDetails {
     private Date timestamp;
     private String message;
@@ -24,4 +23,15 @@ public class ErrorDetails {
         this.details = details;
     }
 
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public String getDetails() {
+        return details;
+    }
 }
