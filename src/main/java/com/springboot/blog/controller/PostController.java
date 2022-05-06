@@ -1,6 +1,7 @@
 package com.springboot.blog.controller;
 
 import com.springboot.blog.payload.PostDto;
+import com.springboot.blog.payload.PostDtoV2;
 import com.springboot.blog.payload.PostResponse;
 import com.springboot.blog.service.PostService;
 import com.springboot.blog.utils.AppConstants;
@@ -10,6 +11,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @program: springboot-blog-rest-api
@@ -19,7 +22,7 @@ import javax.validation.Valid;
  **/
 
 @RestController//convert java object to json
-@RequestMapping("/api/posts")
+@RequestMapping()  //version api through uri
 public class PostController {
 
     private PostService postService;
@@ -32,14 +35,14 @@ public class PostController {
     @PreAuthorize("hasRole('ADMIN')") //配置web security安全类后, 注解表示只用管理员可以访问
     //create blog post
     //request body annotation is to convert json to dto
-    @PostMapping//定义处理方法的请求的url地址
+    @PostMapping("/api/v1/posts")//定义处理方法的请求的url地址
     public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto) {   //valid 注解用来检查 PostDto里定义的规则
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
     }
 
 
     //get all posts rest api
-    @GetMapping
+    @GetMapping("/api/v1/posts")
     public PostResponse getAllPosts(
             @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
@@ -50,15 +53,43 @@ public class PostController {
     }
 
     //get post by id api
-    @GetMapping("/{id}")//placeholder and the annotation PathVariable is to save value in the placeholder
-    public ResponseEntity<PostDto> getPostById(@PathVariable(name = "id") long id) {
+    //version api by uri
+//    @GetMapping("/api/v1/posts/{id}")//placeholder and the annotation PathVariable is to save value in the placeholder
+//    @GetMapping(value = "/api/posts/{id}", params = "version=1")//version api by query parameter v1
+//    @GetMapping(value = "/api/posts/{id}", headers = "X-API-VERSION=1")//version api by header v1
+//    @GetMapping(value = "/api/posts/{id}", produces = "application/vnd.github.v1+json") // version api by content negotiation v1
+    @GetMapping(value = "/api/v1/posts/{id}")
+    public ResponseEntity<PostDto> getPostByIdV1(@PathVariable(name = "id") long id) {
         //ok is set status to ok and return a response entity
         return ResponseEntity.ok(postService.getPostById(id));
     }
 
+
+
+//    @GetMapping("/api/v2/posts/{id}")//version api by uri v2
+//    @GetMapping(value = "/api/posts/{id}", params = "version=2")//version api by query parameter v2
+//    @GetMapping(value = "/api/posts/{id}", headers = "X-API-VERSION=2") // version api by header v2
+//    @GetMapping(value = "/api/posts/{id}", produces = "application/vnd.github.v2+json")// version api by content negotiation v2
+//    public ResponseEntity<PostDtoV2> getPostByIdV2(@PathVariable(name = "id") long id) {
+//        PostDto postDto = postService.getPostById(id);
+//        PostDtoV2 postDtoV2 = new PostDtoV2();
+//        postDtoV2.setId(postDto.getId());
+//        postDtoV2.setTitle(postDto.getTitle());
+//        postDtoV2.setDescription(postDto.getDescription());
+//        postDtoV2.setContent(postDto.getContent());
+//        List<String> tags = new ArrayList<>();
+//        tags.add("Java");
+//        tags.add("Spring Boot");
+//        tags.add("AWS");
+//        postDtoV2.setTags(tags);
+//        //ok is set status to ok and return a response entity
+//        return ResponseEntity.ok(postDtoV2);
+//    }
+
+
     @PreAuthorize("hasRole('ADMIN')")
     //update post by id rest api
-    @PutMapping("/{id}")
+    @PutMapping("/api/v1/posts/{id}")
     public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto postDto,   //valid 注解用来检查 PostDto里定义的规则
                                               @PathVariable(name = "id") long id) {
         PostDto postResponse = postService.updatePost(postDto, id);
@@ -68,7 +99,7 @@ public class PostController {
 
     @PreAuthorize("hasRole('ADMIN')")
     //delete post rest api
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/api/v1/posts/{id}")
     public ResponseEntity<String> deletePost(@PathVariable(name = "id") long id) {
 
         postService.deletePostById(id);

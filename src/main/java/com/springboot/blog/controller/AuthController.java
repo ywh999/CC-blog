@@ -31,7 +31,7 @@ import java.util.Collections;
  **/
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")//version api by uri
 public class AuthController {
 
     @Autowired

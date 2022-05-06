@@ -18,7 +18,7 @@ import java.util.List;
  **/
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/v1")//version api
 public class CommentController {
 
     private CommentService commentService;

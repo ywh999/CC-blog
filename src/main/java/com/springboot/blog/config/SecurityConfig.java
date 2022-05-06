@@ -64,8 +64,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)//设置不会创建或使用任何session,jwt是无状态的, 不用在服务端存信息
                 .and()
                 .authorizeRequests()  //开启请求的权限配置
-                .antMatchers(HttpMethod.GET, "/api/**").permitAll()  //表示所匹配的ant风格的url, 任何用户都可以访问
-                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/**").permitAll()  //表示所匹配的ant风格的url, 任何用户都可以访问
+                .antMatchers("/api/v1/auth/**").permitAll()
                 .anyRequest()  //表示匹配所有请求
                 .authenticated();  //允许认证过的用户访问
             http.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class); //在指定的usernamePasswordFilter之前加上token的filter
