@@ -66,6 +66,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()  //开启请求的权限配置
                 .antMatchers(HttpMethod.GET, "/api/v1/**").permitAll()  //表示所匹配的ant风格的url, 任何用户都可以访问
                 .antMatchers("/api/v1/auth/**").permitAll()
+                .antMatchers("/v2/api-docs/**").permitAll() //v2表示swagger的版本是2
+                .antMatchers("/swagger-ui/**").permitAll() // 自动生产该project的api文档
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("webjars/**").permitAll()  //自动生成的api文档的添加项到这里终止
                 .anyRequest()  //表示匹配所有请求
                 .authenticated();  //允许认证过的用户访问
             http.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class); //在指定的usernamePasswordFilter之前加上token的filter

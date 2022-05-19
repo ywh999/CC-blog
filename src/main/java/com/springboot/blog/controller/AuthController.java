@@ -8,6 +8,8 @@ import com.springboot.blog.payload.SignUpDto;
 import com.springboot.blog.repository.RoleRepository;
 import com.springboot.blog.repository.UserRepository;
 import com.springboot.blog.security.JwtTokenProvider;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @program: springboot-blog-rest-api
@@ -30,6 +34,7 @@ import java.util.Collections;
  * @create: 2022-05-03 10:06
  **/
 
+@Api(value = "Auto controller exposes siginin and signup REST APIs")//mark this class as a swagger resources
 @RestController
 @RequestMapping("/api/v1/auth")//version api by uri
 public class AuthController {
@@ -49,6 +54,7 @@ public class AuthController {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    @ApiOperation(value = "REST API to Register or Signup user to Blog app")// describe 一个具体的方法
     @PostMapping("/signin")
     public ResponseEntity<JwtAuthResponse> authenticateUser(@RequestBody LoginDto loginDto){
         //Authentication 接口是 SecurityContext 中的核心, 包含着 sessionId/IP 、用户 UserDetails 信息、用户的角色等等,
@@ -67,6 +73,7 @@ public class AuthController {
         return ResponseEntity.ok(new JwtAuthResponse(token));
     }
 
+    @ApiOperation(value = "REST API to Signin or Login user to Blog app")// describe 一个具体的方法
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto){
         //add check for username exists in a DB
@@ -94,6 +101,5 @@ public class AuthController {
 
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
-
 
 }

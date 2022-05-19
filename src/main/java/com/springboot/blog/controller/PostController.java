@@ -5,6 +5,9 @@ import com.springboot.blog.payload.PostDtoV2;
 import com.springboot.blog.payload.PostResponse;
 import com.springboot.blog.service.PostService;
 import com.springboot.blog.utils.AppConstants;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,6 +24,7 @@ import java.util.List;
  * @create: 2022-03-19 14:06
  **/
 
+@Api(value = "CRUD Rest APIs for Post resources")
 @RestController//convert java object to json
 @RequestMapping()  //version api through uri
 public class PostController {
@@ -32,6 +36,7 @@ public class PostController {
         this.postService = postService;
     }
 
+    @ApiOperation(value = "Create Post REST API")
     @PreAuthorize("hasRole('ADMIN')") //配置web security安全类后, 注解表示只用管理员可以访问
     //create blog post
     //request body annotation is to convert json to dto
@@ -41,6 +46,7 @@ public class PostController {
     }
 
 
+    @ApiOperation(value = "Get All Posts REST API")
     //get all posts rest api
     @GetMapping("/api/v1/posts")
     public PostResponse getAllPosts(
@@ -58,6 +64,7 @@ public class PostController {
 //    @GetMapping(value = "/api/posts/{id}", params = "version=1")//version api by query parameter v1
 //    @GetMapping(value = "/api/posts/{id}", headers = "X-API-VERSION=1")//version api by header v1
 //    @GetMapping(value = "/api/posts/{id}", produces = "application/vnd.github.v1+json") // version api by content negotiation v1
+    @ApiOperation(value = "Create Post By Id REST API")
     @GetMapping(value = "/api/v1/posts/{id}")
     public ResponseEntity<PostDto> getPostByIdV1(@PathVariable(name = "id") long id) {
         //ok is set status to ok and return a response entity
@@ -87,6 +94,7 @@ public class PostController {
 //    }
 
 
+    @ApiOperation(value = "Update Post By Id REST API")
     @PreAuthorize("hasRole('ADMIN')")
     //update post by id rest api
     @PutMapping("/api/v1/posts/{id}")
@@ -97,6 +105,8 @@ public class PostController {
         return new ResponseEntity<>(postResponse, HttpStatus.OK);
     }
 
+
+    @ApiOperation(value = "Delete Post By Id REST API")
     @PreAuthorize("hasRole('ADMIN')")
     //delete post rest api
     @DeleteMapping("/api/v1/posts/{id}")
