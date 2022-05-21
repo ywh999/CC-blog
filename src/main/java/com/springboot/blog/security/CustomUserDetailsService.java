@@ -38,7 +38,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 user.getPassword(), mapRolesToAuthority(user.getRoles()));
     }
 
-    //在数据库重的role需要加上"ROLE_"作为前缀, 否则不能被GrantedAuthority识别
+    //在数据库中的role需要加上"ROLE_"作为前缀, 否则不能被GrantedAuthority识别
     //数据库密码的存储需要存储encode之后的数据
     private Collection<? extends GrantedAuthority> mapRolesToAuthority(Set<Role> roles) { //私有方法, 用来将roles的set转化为List
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
